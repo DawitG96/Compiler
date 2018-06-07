@@ -1,0 +1,8 @@
+i a
+f b
+i c
+f a
+a = n
+b = z + c + q
+p c
+s = a
