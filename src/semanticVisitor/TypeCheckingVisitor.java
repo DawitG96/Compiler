@@ -9,8 +9,7 @@ import symTable.*;
  *
  */
 public class TypeCheckingVisitor extends AbsVisitor {
-	public STEntry st;
-	public String errors;
+	public String errors = "";
 	
 	@Override
 	public void visit(NodeProgram n) {
@@ -29,8 +28,11 @@ public class TypeCheckingVisitor extends AbsVisitor {
 
 	@Override
 	public void visit(NodePrint n) {
-		n.setResType(ResultType.VOID);
-		
+		n.getResType();
+		if(n.getId().getResType() == ResultType.TYPE_ERROR)
+			n.setResType(ResultType.TYPE_ERROR);
+		else
+			n.setResType(ResultType.VOID);
 	}
 
 	@Override
@@ -48,15 +50,21 @@ public class TypeCheckingVisitor extends AbsVisitor {
 		if (temp == n.getExpr().getResType())
 			n.setResType(ResultType.VOID);
 		
-		else 
-			if (temp == ResultType.FLOAT && n.getExpr().getResType() == ResultType.INT){
+		else {
+			if (temp == ResultType.FLOAT && n.getExpr().getResType() == ResultType.INT) {
 				NodeExpr node = TypeCheckingUtil.convert(n.getExpr());
-				if (node.getClass() == NodeConv.class)
+				if (node.getClass() == NodeConv.class) {
+					n.setExpr(node);
 					node.accept(this);
+				}
+					
 				n.setResType(ResultType.VOID);
 			}
-			else 
+			else {
 				n.setResType(ResultType.TYPE_ERROR);
+				errors += "Errore: conversione impossibile da FLOAT a INT\n";
+			}
+		}
 	}
 
 	@Override
@@ -94,12 +102,6 @@ public class TypeCheckingVisitor extends AbsVisitor {
 	
 	@Override
 	public void visit(NodeDecl n) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visit(NodeStm n) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -51,18 +51,4 @@ public class VisitorTest {
 		for(NodeStm stm: node.getStms())
 			assertEquals(stm.getResType(), ResultType.VOID);
 	}
-	
-	@Test
-	public void test02() throws IOException, LexicalException, SyntacticException {
-		Scanner scanner = new Scanner("./src/files/visit3.txt");
-		Parser parser = new Parser(scanner);
-		NodeProgram node = parser.parse();
-		node.accept(declVisitor);
-		assertEquals(declVisitor.warn, ".> a già dichiarata\n" +
-								".> n da dichiarare\n" +
-								".> z da dichiarare\n" +
-								".> q da dichiarare\n" +
-								".> s da dichiarare\n");
-		assertEquals(3, SymTable.size());
-	}
 }

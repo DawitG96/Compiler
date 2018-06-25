@@ -28,4 +28,9 @@ public class NodeAssign extends NodeStm {
 	public NodeId getId() {
 		return id;
 	}
+
+	public void setExpr(NodeExpr node) {
+		this.expr = node;
+		
+	}
 }

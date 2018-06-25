@@ -5,7 +5,6 @@ public class NodeId extends NodeAST {
 	
 	private String name;
 	private STEntry entry;
-	public STEntry symEntry;
 	
 	public NodeId(String name) {
 		this.name=name;

@@ -13,15 +13,15 @@ import ast.NodeStm;
 
 public class CodeGeneratorVisitor extends AbsVisitor {
 	
-	public StringBuffer generated = new StringBuffer();
+	private StringBuffer generated = new StringBuffer();
+	private boolean first = true;
 	
-	public StringBuffer getCode() {
-		return generated;
+	public String getCode() {
+		return generated.toString();
 	}
 	
 	@Override
 	public void visit(NodeProgram n) {
-		// TODO Auto-generated method stub
 		for (NodeDecl node: n.getDecs()) 
 			node.accept(this);
 		for (NodeStm node: n.getStms()) {
@@ -44,32 +44,35 @@ public class CodeGeneratorVisitor extends AbsVisitor {
 
 	@Override
 	public void visit(NodePrint n) {
-		generated.append(" l"+ n.getId()+" p");
+		generated.append("l"+ n.getId()+" p");
+		generated.append(" sf");
 	}
 
 	@Override
 	public void visit(NodeAssign n) {
+		first = true;
 		n.getExpr().accept(this);
+		
 		generated.append(" s"+n.getId());
-		generated.append("\n 0 k\n");
+		generated.append("\n0 k\n");
 	}
 
 	@Override
-	public void visit(NodeCost n) {	
-		generated.append(" "+n);
-
+	public void visit(NodeCost n) {
+		generated.append((first?"":" ")+n);
+		first = false;
 	}
 
 	@Override
 	public void visit(NodeConv n) {
 		n.getExpr().accept(this);
-		generated.append("\n 5 k \n");
+		generated.append(" 5 k");
 	}
 
 	@Override
 	public void visit(NodeDeref n) {
-		generated.append(" l"+n.getId());
-
+		generated.append((first?"l":" l")+n.getId());
+		first=false;
 	}
 
 	@Override
@@ -83,11 +86,4 @@ public class CodeGeneratorVisitor extends AbsVisitor {
 			generated.append(" +");
 				
 	}
-
-	@Override
-	public void visit(NodeStm n) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

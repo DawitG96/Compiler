@@ -91,9 +91,4 @@ public class ScannerTest {
 		tkn=s.nextToken();
 		assertEquals (TokenType.EOF, tkn.getTktp());
 	}
-
-	@Test 
-	public void makeItFail() throws IOException {
-		//TODO test che potrebbe far fallire
-	}
 }

@@ -22,12 +22,13 @@ import ast.ResultType;
  *
  */
 public class DeclarationVisitor extends AbsVisitor {
-	public String warn = "";	
+	public String warn = "";
+	
 	@Override
 	public void visit(NodeId n) {
 		STEntry temp = SymTable.lookup(n.toString());
 		if (temp != null){
-			n.symEntry = temp;
+			n.setEntry(temp);
 			if (temp.getType() == LangType.FLOAT)
 			n.setResType(ResultType.FLOAT);
 			
@@ -37,7 +38,7 @@ public class DeclarationVisitor extends AbsVisitor {
 		}
 		else {
 			n.setResType(ResultType.TYPE_ERROR);
-			 warn = warn+".> "+n.toString()+" da dichiarare\n";
+			 warn += n.toString()+" -> da dichiarare\n";
 		}
 	}
 
@@ -47,17 +48,11 @@ public class DeclarationVisitor extends AbsVisitor {
 		if(SymTable.enter(n.getId().toString(), new STEntry(n.getType()))==false){
 			
 			n.setResType(ResultType.TYPE_ERROR);
-			warn = warn+".> "+n.getId()+" già dichiarata\n";
+			warn += n.getId()+" -> già dichiarata\n";
 		}
 		else n.setResType(ResultType.VOID);
 	}
-
-	@Override
-	public void visit(NodeStm n) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public void visit(NodeConv n) {
 		n.getExpr().accept(this);	
@@ -83,7 +78,7 @@ public class DeclarationVisitor extends AbsVisitor {
 
 	@Override
 	public void visit(NodeAssign n) {
-		n.getId().accept(this);
+		n.getId().accept(this); 
 		n.getExpr().accept(this);
 	}
 

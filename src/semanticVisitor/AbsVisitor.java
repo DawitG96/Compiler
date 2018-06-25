@@ -25,7 +25,4 @@ public abstract class AbsVisitor {
 	public abstract void visit(NodeDeref n);
 
 	public abstract void visit(NodeOpBin n);
-
-	public abstract void visit(NodeStm n);
-
 }

@@ -7,7 +7,5 @@ public abstract class NodeStm extends NodeAST{
 	}
 	
 	@Override
-	public void accept(AbsVisitor a) {
-		a.visit(this);
-	}
+	public void accept(AbsVisitor a) {}
 }
